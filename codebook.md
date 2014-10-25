@@ -34,7 +34,7 @@ performed the activity.
 * 'test/subject_test.txt': Each row identifies the subject who
 performed the activity.
 
-From the original dataset, we only kept the mean and standard deviation for each variable (since the assigment explicitly states that).
+From the original dataset, we only kept the mean and standard deviation for each variable (since the assignment explicitly states that).
 
 Transformation detailes
 -----------------------
