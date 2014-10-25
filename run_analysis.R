@@ -84,8 +84,8 @@ run.analysis <- function()
   raw.data <- merge.training.and.test.sets()
   mean.and.std <- extract.mean.and.standard.deviation(raw.data)
   tbl <- add.activity.labels(mean.and.std)
-  group.and.summarize(tbl)
+  tbl <- group.and.summarize(tbl)
+  write.table(tbl, file = "dataset.txt", row.name=FALSE)
 }
 
-new.dataset <- run.analysis()
-write.table(new.dataset, file = "dataset.txt", row.name=FALSE)
+run.analysis()
