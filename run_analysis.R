@@ -71,3 +71,14 @@ group.and.summarize <- function(tbl)
   molten <- melt(subset(tbl, select=-c(activity_id)), id.vars = c("subject_id", "activity"))
   cast(subject_id + variable ~ activity, data = molten, fun = mean)
 }
+
+
+# Entry point.
+
+run.analysis <- function()
+{
+  raw.data <- merge.training.and.test.sets()
+  mean.and.std <- extract.mean.and.standard.deviation(raw.data)
+  tbl <- add.activity.labels(mean.and.std)
+  group.and.summarize(tbl)
+}
