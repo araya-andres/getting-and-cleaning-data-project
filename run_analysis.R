@@ -1,3 +1,7 @@
+if (!require("reshape")) {
+  install.packages("reshape")
+}
+
 library(reshape)
 
 dataset.dir <- './UCI HAR Dataset'
@@ -82,3 +86,6 @@ run.analysis <- function()
   tbl <- add.activity.labels(mean.and.std)
   group.and.summarize(tbl)
 }
+
+new.dataset <- run.analysis()
+write.table(new.dataset, file = "dataset.txt", row.name=FALSE)
