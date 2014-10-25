@@ -7,7 +7,7 @@ The script assumes that the dataset was unzipped on the same directory. After 's
 1. Download and unzip the datasource file.
 2. Download the script ```run_analysis.R``` in the parent folder. Set the working
    directory on R properly using ```setwd()``` if required.
-3. Type ```source("run_analysis.R)``` and hit ```ENTER```.
+3. Type ```source("run_analysis.R")``` and hit ```ENTER```.
 
 ## Dependencies
 
