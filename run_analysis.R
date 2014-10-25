@@ -1,3 +1,5 @@
+library(reshape)
+
 dataset.dir <- './UCI HAR Dataset'
 dir.sep <- '/'
 
@@ -64,4 +66,8 @@ add.activity.labels <- function(tbl)
 # set with the average of each variable for each activity and each
 # subject.
 
-
+group.and.summarize <- function(tbl)
+{
+  molten <- melt(subset(tbl, select=-c(activity_id)), id.vars = c("subject_id", "activity"))
+  cast(subject_id + variable ~ activity, data = molten, fun = mean)
+}
