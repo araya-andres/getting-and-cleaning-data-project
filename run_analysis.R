@@ -6,7 +6,7 @@ get.header <- function()
   file <- paste(dataset.dir, 'features.txt', sep = dir.sep)
   header <- read.csv(file, header = FALSE, sep = ' ', stringsAsFactors = FALSE)
   header <- header[,2]
-  c("activity_id", header)
+  c("subject_id", "activity_id", header)
 }
 
 
@@ -15,23 +15,21 @@ get.header <- function()
 merge.training.and.test.sets <- function()
 {
   header <- get.header()
-  ncols <- length(header) - 1
+  ncols <- length(header)
 
-  file <- paste(dataset.dir, "train", "X_train.txt", sep = dir.sep)
-  X_train <- read.fwf(file, rep.int(16, ncols), header = FALSE, colClasses = "numeric", comment.char = "")
-  file <- paste(dataset.dir, "train", "y_train.txt", sep = dir.sep)
-  y_train <- read.csv(file, header = FALSE)
-  train <- cbind(y_train, X_train)
-
-  file <- paste(dataset.dir, "test", "X_test.txt", sep = dir.sep)
-  X_test <- read.fwf(file, rep.int(16, ncols), header = FALSE, colClasses = "numeric", comment.char = "")
-  file <- paste(dataset.dir, "test", "y_test.txt", sep = dir.sep)
-  y_test <- read.csv(file, header = FALSE)
-  test <- cbind(y_test, X_test)
-
-  tbl <- rbind(train, test)
-  names(tbl) <- header
-  tbl
+  dataset <- c("train", "test")
+  for (ds in dataset) {
+      file <- sprintf("%s/%s/subject_%s.txt", dataset.dir, ds, ds)
+      subject <- read.table(file, header = FALSE)
+      file <- sprintf("%s/%s/y_%s.txt", dataset.dir, ds, ds)
+      y <- read.csv(file, header = FALSE)
+      file <- sprintf("%s/%s/X_%s.txt", dataset.dir, ds, ds)
+      X <- read.fwf(file, rep.int(16, ncols - 2), header = FALSE, colClasses = "numeric", comment.char = "")
+      assign(x = ds, value = cbind(subject, y, X))
+  }
+  ans <- rbind(train, test) # there must be a better way
+  names(ans) <- header
+  ans
 }
 
 
@@ -41,7 +39,7 @@ merge.training.and.test.sets <- function()
 extract.mean.and.standard.deviation <- function(tbl)
 {
   header <- get.header()
-  tbl[, grepl("activity_id", header) | grepl("-mean[(]", header) | grepl("-std[(]", header)]
+  tbl[, grepl("_id$", header) | grepl("-mean[(]", header) | grepl("-std[(]", header)]
 }
 
 
@@ -65,3 +63,5 @@ add.activity.labels <- function(tbl)
 # 5. From the data set in step 4, creates a second, independent tidy data
 # set with the average of each variable for each activity and each
 # subject.
+
+
